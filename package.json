@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package-win": "electron-packager . HOI4_Save_Migrator --platform=win32 --arch=x64 --overwrite --icon=icon.ico",
+    "package-win": "electron-packager . HOI4_Save_Migrator --platform=win32 --arch=x64 --overwrite --icon=icon.ico --ignore=\"^/release($|/)\" --ignore=\"^/HOI4_Save_Migrator-win32-x64($|/)\"",
     "package-mac": "electron-packager . HOI4_Save_Migrator --platform=darwin --arch=x64 --overwrite",
     "package-linux": "electron-packager . HOI4_Save_Migrator --platform=linux --arch=x64 --overwrite",
     "test": "node tests/test-validator.js && node tests/test-migration.js",
