@@ -1,0 +1,16 @@
+HOI4txt
+player="FRA"
+date=1936.1.1.1
+version="v1.19.0"
+save_version=33
+minor_save_version=0
+states={
+	1={
+		owner="FRA"
+	}
+}
+2={
+	owner="GER"
+}
+provinces={
+}

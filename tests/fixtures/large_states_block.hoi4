@@ -1,0 +1,60 @@
+HOI4txt
+player="FRA"
+date=1936.1.1.1
+version="v1.19.0"
+save_version=33
+minor_save_version=0
+states={
+	1={ owner="FRA" }
+	2={ owner="FRA" }
+	3={ owner="FRA" }
+	4={ owner="FRA" }
+	5={ owner="FRA" }
+	6={ owner="FRA" }
+	7={ owner="FRA" }
+	8={ owner="FRA" }
+	9={ owner="FRA" }
+	10={ owner="FRA" }
+	11={ owner="FRA" }
+	12={ owner="FRA" }
+	13={ owner="FRA" }
+	14={ owner="FRA" }
+	15={ owner="FRA" }
+	16={ owner="FRA" }
+	17={ owner="FRA" }
+	18={ owner="FRA" }
+	19={ owner="FRA" }
+	20={ owner="FRA" }
+	21={ owner="FRA" }
+	22={ owner="FRA" }
+	23={ owner="FRA" }
+	24={ owner="FRA" }
+	25={ owner="FRA" }
+	26={ owner="FRA" }
+	27={ owner="FRA" }
+	28={ owner="FRA" }
+	29={ owner="FRA" }
+	30={ owner="FRA" }
+	31={ owner="FRA" }
+	32={ owner="FRA" }
+	33={ owner="FRA" }
+	34={ owner="FRA" }
+	35={ owner="FRA" }
+	36={ owner="FRA" }
+	37={ owner="FRA" }
+	38={ owner="FRA" }
+	39={ owner="FRA" }
+	40={ owner="FRA" }
+	41={ owner="FRA" }
+	42={ owner="FRA" }
+	43={ owner="FRA" }
+	44={ owner="FRA" }
+	45={ owner="FRA" }
+	46={ owner="FRA" }
+	47={ owner="FRA" }
+	48={ owner="FRA" }
+	49={ owner="FRA" }
+	50={ owner="FRA" }
+}
+provinces={
+}

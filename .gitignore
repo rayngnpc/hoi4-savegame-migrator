@@ -1,0 +1,17 @@
+# Node dependencies
+node_modules/
+
+# Compiled package output directory
+HOI4_Save_Migrator-win32-x64/
+
+# Local build / packaged executable copies
+*.exe
+
+# Temporary files and backup files
+*.tmp
+*.bak
+
+# IDE & OS files
+.vscode/
+.DS_Store
+Thumbs.db

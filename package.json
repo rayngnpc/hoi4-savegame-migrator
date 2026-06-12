@@ -1,0 +1,28 @@
+{
+  "name": "hoi4-savegame-migrator",
+  "version": "1.0.0",
+  "description": "Cross-platform HOI4 Save Game Migrator & Repair Tool",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-win": "electron-packager . HOI4_Save_Migrator --platform=win32 --arch=x64 --overwrite --icon=icon.ico",
+    "package-mac": "electron-packager . HOI4_Save_Migrator --platform=darwin --arch=x64 --overwrite",
+    "package-linux": "electron-packager . HOI4_Save_Migrator --platform=linux --arch=x64 --overwrite",
+    "test": "node tests/test-validator.js && node tests/test-migration.js",
+    "test:real": "node tests/test-real-saves.js",
+    "test:all": "npm test && npm run test:real"
+  },
+  "keywords": [
+    "hoi4",
+    "savegame",
+    "migrator",
+    "kaiserredux",
+    "roadto56"
+  ],
+  "author": "rayngnpc",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^30.0.1",
+    "electron-packager": "^17.1.2"
+  }
+}

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOI4 Save Game Migrator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Tactical Neon Glass Background Layer -->
+    <div class="glass-bg"></div>
+    <div class="grid-overlay"></div>
+    
+    <div class="container">
+        <!-- Dashboard Header -->
+        <header class="tactical-header">
+            <div class="header-main">
+                <div class="logo-area">
+                    <div class="pulse-indicator"></div>
+                    <div class="title-wrap">
+                        <h1>Hearts of Iron IV</h1>
+                        <span class="subtitle">Save Migrator</span>
+                    </div>
+                </div>
+                <div class="header-status-panel">
+                    <div class="status-item">
+                        <span class="status-lbl">TARGET VERSION:</span>
+                        <span class="status-val text-glow-cyan" id="target-version-str">Loading...</span>
+                    </div>
+                    <span class="badge version-badge" id="target-version-badge">DETECTING...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Workspace -->
+        <div class="main-grid">
+            <!-- Left Column: Operations Control Deck -->
+            <aside class="control-deck">
+                <!-- Mod Scenario Selector -->
+                <div class="panel-card scenario-card">
+                    <div class="card-header-tactical">
+                        <h2>
+                            <svg class="header-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                <path d="M12 2L2 22h20L12 2zm0 3.99L19.53 19H4.47L12 5.99zM13 16h-2v2h2v-2zm0-6h-2v4h2v-4z"/>
+                            </svg>
+                            ACTIVE MAP SCENARIOS
+                        </h2>
+                        <span class="card-subtitle">Select mods to align save state coordinates</span>
+                    </div>
+                    
+                    <div class="scenarios-grid">
+                        <!-- Vanilla Pill -->
+                        <div class="scenario-pill active" id="pill-vanilla">
+                            <input type="checkbox" id="scen-vanilla" checked hidden>
+                            <div class="pill-content">
+                                <span class="pill-title">Vanilla HOI4</span>
+                                <span class="pill-desc">Default base map states</span>
+                                <span class="mod-compat-lbl success" id="compat-vanilla">✓ Up-to-date</span>
+                            </div>
+                            <span class="check-mark">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Kaiserredux Pill -->
+                        <div class="scenario-pill" id="pill-kaiserredux">
+                            <input type="checkbox" id="scen-kaiserredux" hidden>
+                            <div class="pill-content">
+                                <span class="pill-title">KaiserreduX</span>
+                                <span class="pill-desc">Workshop ID: 2076426030</span>
+                                <span class="mod-compat-lbl" id="compat-kaiserredux">Checking...</span>
+                            </div>
+                            <span class="check-mark">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Road to 56 Pill -->
+                        <div class="scenario-pill" id="pill-roadto56">
+                            <input type="checkbox" id="scen-roadto56" hidden>
+                            <div class="pill-content">
+                                <span class="pill-title">Road to 56</span>
+                                <span class="pill-desc">Workshop ID: 820260968</span>
+                                <span class="mod-compat-lbl" id="compat-roadto56">Checking...</span>
+                            </div>
+                            <span class="check-mark">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Custom Mod Loader -->
+                    <div class="custom-loader-section">
+                        <label for="custom-mod-input" class="minimal-label">Add Custom Workshop Mod</label>
+                        <div class="input-row-minimal">
+                            <input type="text" id="custom-mod-input" placeholder="Enter Steam Workshop ID...">
+                            <button class="btn-minimal" id="add-custom-mod-btn" title="Add Mod ID">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="custom-pills-container" id="custom-pills-container">
+                            <!-- Dynamic custom pills appear here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Directories Panel -->
+                <div class="panel-card paths-card">
+                    <div class="card-header-tactical">
+                        <h2>
+                            <svg class="header-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/>
+                            </svg>
+                            SYSTEM DIRECTORIES
+                        </h2>
+                        <span class="card-subtitle">Verify path mappings for save file processing</span>
+                    </div>
+                    
+                    <div class="path-inputs-minimal">
+                        <!-- Game Install path -->
+                        <div class="input-group-minimal">
+                            <label for="game-dir-input">Game Installation</label>
+                            <div class="input-with-action">
+                                <input type="text" id="game-dir-input" placeholder="Scanning system directories...">
+                                <button class="btn-browse-dir" id="btn-browse-game" title="Select Game Folder">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                                        <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mods Root path -->
+                        <div class="input-group-minimal">
+                            <label for="mods-root-input">Workshop Mods Root</label>
+                            <div class="input-with-action">
+                                <input type="text" id="mods-root-input" placeholder="Scanning workshop folder...">
+                                <button class="btn-browse-dir" id="btn-browse-mods" title="Select Mods Folder">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                                        <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Saves Directory path -->
+                        <div class="input-group-minimal">
+                            <label for="save-dir-input">Saves Directory</label>
+                            <div class="input-with-action">
+                                <input type="text" id="save-dir-input" placeholder="Scanning HOI4 saves folder...">
+                                <button class="btn-browse-dir" id="btn-browse-saves" title="Select Saves Folder">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                                        <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-full" id="save-paths-btn">Apply Directory Overrides</button>
+                </div>
+
+                <!-- Engine Diagnostics Status -->
+                <div class="panel-card status-card">
+                    <div class="info-row">
+                        <span class="info-tag">Defines Version:</span>
+                        <span class="info-val" id="target-save-ver">Detecting...</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-tag">Engine:</span>
+                        <span class="info-val" id="rakaly-status-badge">Checking...</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Column: Action Center & Saves Database -->
+            <main class="action-center">
+                <!-- Database Records List -->
+                <div class="panel-card saves-card">
+                    <div class="saves-card-header">
+                        <div class="search-row-premium">
+                            <div class="search-bar">
+                                <span class="search-icon">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                </span>
+                                <input type="text" id="saves-search-input" placeholder="Filter save records by player, country, version or filename...">
+                            </div>
+                            <div class="sort-selector-premium">
+                                <select id="saves-sort-select" class="select-premium">
+                                    <option value="modified_desc">Sort: Last Modified (Newest)</option>
+                                    <option value="modified_asc">Sort: Last Modified (Oldest)</option>
+                                    <option value="gamedate_desc">Sort: Game Date (Newest)</option>
+                                    <option value="gamedate_asc">Sort: Game Date (Oldest)</option>
+                                    <option value="size_desc">Sort: File Size (Largest)</option>
+                                    <option value="size_asc">Sort: File Size (Smallest)</option>
+                                    <option value="country_asc">Sort: Country (A-Z)</option>
+                                    <option value="country_desc">Sort: Country (Z-A)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" id="refresh-saves-btn">
+                            <svg class="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                            Refresh
+                        </button>
+                    </div>
+
+                    <div class="filter-tab-bar" id="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All Saves</button>
+                        <button class="filter-tab" data-filter="vanilla">Vanilla</button>
+                        <button class="filter-tab" data-filter="kaiserredux">KaiserreduX</button>
+                        <button class="filter-tab" data-filter="roadto56">Road to 56</button>
+                        <button class="filter-tab" data-filter="mods">Other Mods</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="saves-table-premium">
+                            <thead>
+                                <tr>
+                                    <th style="width: auto;">Save File Configuration</th>
+                                    <th style="width: 70px;">Player</th>
+                                    <th style="width: 90px;">Game Date</th>
+                                    <th style="width: 95px;">File Version</th>
+                                    <th style="width: 100px;">Compatibility</th>
+                                    <th style="width: 240px; text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="saves-tbody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">Running system diagnostics scan...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Migration Terminal Console (Directly Below Saves, Not a popup) -->
+                <div class="panel-card migration-card" id="migration-status-card">
+                    <div class="migration-header">
+                        <div class="mig-title-area">
+                            <span class="ping-active"></span>
+                            <h2>MIGRATION & REPAIR PROCESS</h2>
+                        </div>
+                        <span class="status-badge-glow" id="migration-status-text">SYSTEM READY</span>
+                    </div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-stats">
+                            <span class="progress-task-label" id="migration-progress-task">Idle - Select a save game record to repair</span>
+                            <span class="progress-percentage-label" id="migration-progress-percent">0%</span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="migration-progress-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Retro Tactical CRT Command Console -->
+                    <div class="terminal-premium">
+                        <div class="terminal-bar">
+                            <div class="terminal-dots">
+                                <span class="terminal-dot red"></span>
+                                <span class="terminal-dot yellow"></span>
+                                <span class="terminal-dot green"></span>
+                            </div>
+                            <span class="terminal-title-text">CONSOLE DIAGNOSTIC PIPELINE</span>
+                        </div>
+                        <div class="terminal-body-wrapper">
+                            <div class="terminal-scanline"></div>
+                            <div class="terminal-console-body" id="terminal-logs">System idle. Diagnostic logs ready for operation...</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal Dialog Backdrop -->
+    <div class="modal-backdrop hidden" id="confirm-modal-backdrop">
+        <div class="panel-card confirm-modal">
+            <div class="confirm-header">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <h2>CONFIRM OPERATION</h2>
+            </div>
+            <div class="confirm-body">
+                <p class="confirm-message">Are you sure you want to upgrade this save game database?</p>
+                <div class="confirm-details">
+                    <div class="confirm-detail-row">
+                        <span class="detail-label">Target Save File:</span>
+                        <span class="detail-value text-glow-cyan" id="confirm-file-name">Loading...</span>
+                    </div>
+                    <div class="confirm-detail-row">
+                        <span class="detail-label">Target Versions:</span>
+                        <span class="detail-value text-glow-cyan" id="confirm-version-map">Loading...</span>
+                    </div>
+                </div>
+                <div class="confirm-warning-box hidden" id="confirm-warning-box">
+                    <span class="warning-title">⚠️ MOD COMPATIBILITY WARNING</span>
+                    <p class="warning-text" id="confirm-warning-text"></p>
+                </div>
+                <p class="confirm-info-sub">An automatic backup (.bak) will be created, allowing you to rollback this action at any time.</p>
+            </div>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+                <button class="btn btn-primary" id="confirm-ok-btn">Proceed</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="index.js"></script>
+</body>
+</html>
