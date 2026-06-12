@@ -1,7 +1,7 @@
 {
   "name": "hoi4-savegame-migrator",
   "version": "1.0.0",
-  "description": "Cross-platform HOI4 Save Game Migrator & Repair Tool",
+  "description": "Windows HOI4 Save Game Migrator & Repair Tool",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

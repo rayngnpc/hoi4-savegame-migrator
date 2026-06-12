@@ -1,80 +1,71 @@
-# Hearts of Iron IV — Save Game Migrator & Repair Tool
+# HOI4 Save Game Migrator
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Platform: Windows | macOS | Linux](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen.svg)](#)
+A Windows desktop tool for repairing and migrating Hearts of Iron IV save games after base game or workshop mod updates break compatibility.
 
-A premium desktop utility built to save broken Hearts of Iron IV save game files from version mismatches and coordinate misalignments caused by base game or workshop mod updates.
+## Download For Windows
 
----
+Download the ready-to-use package from the GitHub Releases page:
 
-## 📖 The Backstory
+https://github.com/rayngnpc/hoi4-savegame-migrator/releases
 
-> "I play Hearts of Iron IV with my friends every weekend, but we only have a few hours of free time to play together. In reality, a single campaign can stretch over several months. Unfortunately, whenever the game or one of our active mods updates, our save games break and become completely unusable. It pissed me off so much that I had to build this tool to fix our saves so we could finally continue our campaigns.
->
-> Because of the sheer number of mods, custom map scenarios, and potential future game updates, it is impossible to test every single combination. This tool isn't guaranteed to be 100% compatible with every scenario, but my hope is that it keeps our saves alive and I don't have to come back to maintain this repository too often. I hope it serves you well and lasts as long as the game itself remains active!"
+Use the file named:
 
----
+```text
+HOI4_Save_Migrator-win32-x64.zip
+```
 
-## ⚡ Key Features
+## How To Use
 
-* **🚀 Melter Engine Integration**: Integrates directly with native melting binaries for lightning-fast plain-text translation of binary Paradox saves.
-* **⚠️ Mod Version Compatibility Guard**: 
-  * Automatically scans Paradox `descriptor.mod` files inside Steam Workshop directories.
-  * Queries and displays version compatibility (supporting wildcards like `1.18.*`) under active map scenario pills.
-  * Alerts you with warnings inside the confirmation dialog if you try to migrate a save with outdated active mods.
-* **📊 Enterprise Grid Navigation**:
-  * **Sort Controls**: Sort your save game library by File Modification Date, Game Date (custom chronology sorting), File Size, or Player Country Tag.
-  * **Category Filter Tabs**: Group saves dynamically by `All Saves`, `Vanilla`, `KaiserreduX`, `Road to 56`, and `Other Mods`.
-  * **Reactive Search**: Instantly filters files in real-time as you type, integrated alongside the active category tab and sort option.
-* **🛡️ Structural Integrity Validation**:
-  * Balanced braces scanner (ignores braces inside comments `#` and quoted strings).
-  * Root block presence assertions (`player`, `date`, `version`, `save_version`, `states`).
-  * Orphaned state ID prevention (guarantees states are not leaked outside of the `states = {}` parent block).
-* **🔄 Safe Atomic Operations**: Writes output atomically to temporary files and validates structural integrity before overwriting. Automatically creates backups (`.bak`) allowing instant risk-free rollbacks.
+1. Download `HOI4_Save_Migrator-win32-x64.zip` from Releases.
+2. Right-click the zip file and choose `Extract All`.
+3. Open the extracted `HOI4_Save_Migrator-win32-x64` folder.
+4. Double-click `HOI4_Save_Migrator.exe`.
+5. Select your Hearts of Iron IV save folder when the app opens.
+6. Choose a save file, review the compatibility warnings, then run the migration.
 
----
+Keep the extracted folder together. Do not move only `HOI4_Save_Migrator.exe` by itself, because the app needs the files beside it.
 
-## 🛠️ Getting Started
+## What It Does
 
-### Prerequisites
-* [Node.js](https://nodejs.org/) (v16.0 or higher recommended)
-* NPM
+- Reads local Hearts of Iron IV save games.
+- Converts supported binary saves to editable text through the bundled Rakaly engine.
+- Checks save structure before replacing files.
+- Creates `.bak` backups before migration.
+- Warns about active mod compatibility where possible.
+- Supports sorting, searching, and filtering large save folders.
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/rayngnpc/hoi4-savegame-migrator.git
-   cd hoi4-savegame-migrator
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+## Important Notes
 
-### Running Locally
-To launch the desktop application in development mode:
+This tool edits save files, so keep backups of important campaigns. The app creates backup files automatically, but copying your most important saves somewhere safe is still recommended.
+
+The current packaged download is for Windows x64.
+
+## For Developers
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run locally:
+
 ```bash
 npm start
 ```
 
-### Running Tests
-To run the full suite of unit, integration, and real-saves validation tests:
-```bash
-# Run unit and integration tests
-npm test
+Run tests:
 
-# Run smoke tests on your local save game files
-npm run test:real
+```bash
+npm test
 ```
 
-### Packaging the Application
-To build a standalone Windows executable (`HOI4_Save_Migrator.exe`) with the custom app icon compiled into the binary resources:
+Build the Windows portable package:
+
 ```bash
 npm run package-win
 ```
 
----
+## License
 
-## ⚖️ License
-
-Distributed under the MIT License. See `LICENSE` for details.
+Distributed under the MIT License.

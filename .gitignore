@@ -6,6 +6,8 @@ HOI4_Save_Migrator-win32-x64/
 
 # Local build / packaged executable copies
 *.exe
+*.zip
+release/
 
 # Temporary files and backup files
 *.tmp
